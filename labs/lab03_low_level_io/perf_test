@@ -1,0 +1,14 @@
+#!/bin/bash
+
+testfile=`ls /boot/initrd*|head -1`
+
+test -z "$testfile" && exit 0
+
+for i in `seq 0 14`
+do
+  bs=$((2**$i))
+  echo -n $bs " ";
+  /usr/bin/time -f %e ./raw_copy $bs  $testfile /tmp/testfile 2>&1
+done > performance.log
+
+./plot_log_log performance.log perf.png
