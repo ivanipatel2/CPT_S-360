@@ -1,0 +1,59 @@
+// It's not a bad practice to list *why* you include particular
+// headers.
+#include <stdio.h> // for FILE, NULL, fopen(), and getc()
+
+#include "eprintf.h" // for eprintf_fail()
+
+// Although not strictly required, its a good practice to include the
+// header file that corresponds to this source file to detect any
+// discrepancies between the function's declaration and its
+// definition.
+#include "compare_files.h"
+
+
+int compareFiles(char *fname0, char *fname1)
+{
+    FILE *f0,*f1;
+    int c0,c1;
+    //
+    // ASSIGNMENT
+    //
+    // This function compares two files named `fname0` and `fname1`
+    // and returns true (1) if they are identical or false (0) if they
+    // are not. Here's how it would be described in pseudocode (note
+    // the indented block structure):
+    //
+    //   open file 0 for reading (hint: fopen(3))
+    f0 = fopen(fname0,"r");
+    //   if the open fails,
+    if (f0 == NULL) {
+    //       exit with an error message
+    	eprintf_fail("Open of file %s failed\n",fname0);
+	}
+    //   open file 1 for reading (hint: fopen(3))
+    f1 = fopen(fname1,"r");
+    //   if the open fails,
+    if (f1 == NULL) {
+    //       exit with an error message
+    	eprintf_fail("Open of file %s failed\n",fname1);
+	}
+    //   repeat until this function returns:
+    c0=0;
+	c1=0;
+    while (c0 != EOF && c1 != EOF) {
+    //       read a character `ch0` from file 0 (hint: getc(3))
+      c0 = fgetc(f0);
+    //       read a character `ch1` from file 1 (hint: getc(3))
+      c1 = fgetc(f1);
+    //       compare both characters to each other and to `EOF`,
+    //        (possibly) returning 0 or 1
+      if (c0 != c1 && c0 + c1 != -2 ) 
+          return 0;
+    //
+    // The last statement is intentionally vague. The logic here is
+    // important. No extra points challenge: It can be done in a
+    // single `if`-block.
+    //
+    }
+    return 1;
+}
